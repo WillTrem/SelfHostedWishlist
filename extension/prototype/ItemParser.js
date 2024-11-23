@@ -5,30 +5,37 @@ let theCurrentProduct = {};
 const imageTags = document.querySelectorAll("img");
 // console.log(imageTags);
 
-// 2) Obtain the image tag with the highest size (IN PROGRESS)
-let largest = null;
-let largestArea = null;
-imageTags.forEach((tag) => {
-  const currentStyle = window.getComputedStyle(tag);
+// Attempt to obtain the image using the open graph meta tag og:image (Not always accurate)
+const ogImageMetaTag = document.querySelector('meta[property="og:image"]');
+if (ogImageMetaTag) {
+  theCurrentProduct.image = ogImageMetaTag.getAttribute("content");
+} else {
+  // Obtain the image tag with the highest size (IN PROGRESS)
+  let largest = null;
+  let largestArea = null;
+  imageTags.forEach((tag) => {
+    const currentStyle = window.getComputedStyle(tag);
 
-  const currentArea =
-    parseFloat(currentStyle.width) * parseFloat(currentStyle.height);
+    const currentArea =
+      parseFloat(currentStyle.width) * parseFloat(currentStyle.height);
 
-  if (largest === null || currentArea > largestArea) {
-    const largestStyle = window.getComputedStyle(tag);
-    largestArea =
-      parseFloat(largestStyle.width) * parseFloat(largestStyle.height);
-    largest = tag;
-  }
-});
-theCurrentProduct.image = largest.src;
+    if (largest === null || currentArea > largestArea) {
+      const largestStyle = window.getComputedStyle(tag);
+      largestArea =
+        parseFloat(largestStyle.width) * parseFloat(largestStyle.height);
+      largest = tag;
+    }
+  });
+  theCurrentProduct.image = largest.src;
+}
 
-// 3) Match the text that resembles closest to the tab's title (WORKS)
+// 3) Match the text that resembles closest to the tab's title
 const titleText = document.querySelector("title").textContent;
 const textTags = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6,span,p")];
 // console.log(textTags);
 // console.log(titleText);
 
+// TODO: Take the longest one that matches from the beginning of the string
 theCurrentProduct.title = "";
 
 for (let i = 0; i < textTags.length; i++) {
@@ -47,3 +54,6 @@ for (let i = 0; i < textTags.length; i++) {
 }
 
 console.log("Product: ", theCurrentProduct);
+
+// TODO:
+// Handle amazon separately

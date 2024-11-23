@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Self Hosted Wishlist Item Picker",
+  "version": "1.0",
+  "description": "A smart browser extension to add products to wishlists",
+  "permissions": ["activeTab", "storage"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_scripts/content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html"
+  }
+}
