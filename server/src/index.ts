@@ -1,13 +1,28 @@
-import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import express, { Express, Request, Response } from 'express';
+import dotenv from 'dotenv';
+import { getItems } from './api';
+import ErrCallback from './types/ErrCallback';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("This is a test");
+const genericErrCallback: ErrCallback = (err) => {
+  if (err) {
+    console.error(err);
+  }
+};
+
+app.get('/', (req: Request, res: Response) => {
+  res.send('This is a test');
+});
+
+app.get('/items', (req, res) => {
+  const items = getItems(genericErrCallback);
+  if (items) {
+    res.send(items);
+  }
 });
 
 app.listen(port, () => {

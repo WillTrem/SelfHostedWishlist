@@ -72,7 +72,7 @@ function App() {
                       overflow={'hidden'}
                       flexShrink={0}
                     >
-                      <Image src={item.imageUrl} alt={item.name} maxH={'100px'} fit={'contain'} />
+                      <Image src={item.image_url} alt={item.name} maxH={'100px'} fit={'contain'} />
                       <Card.Body gap={'0.5'}>
                         <Card.Title lineClamp={'2'}>{item.name}</Card.Title>
                         <Card.Description lineClamp={'2'}>{item.website}</Card.Description>

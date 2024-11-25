@@ -4,5 +4,5 @@ export default interface Item {
   website: string;
   price: string;
   url: string;
-  imageUrl: string;
+  image_url: string;
 }
