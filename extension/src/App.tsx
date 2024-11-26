@@ -9,20 +9,28 @@ import { Text } from '@chakra-ui/react/typography';
 import { HStack } from '@chakra-ui/react/stack';
 import { useEffect, useState } from 'react';
 import Item from './interfaces/Item';
-import { getItems } from './api/itemsApi';
+import { deleteItem, getItems } from './api/itemsApi';
 
 function App() {
   const [items, setItems] = useState<Item[]>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    void getItemList();
-  }, []);
+    if (loading) {
+      void getItemList();
+    }
+  }, [loading]);
 
   async function getItemList() {
+    setLoading(true);
     const newItems = await getItems();
     setItems(newItems);
     setLoading(false);
+  }
+
+  async function handleDeleteItem(id: number) {
+    await deleteItem(id);
+    setLoading(true);
   }
 
   return (
@@ -106,7 +114,11 @@ function App() {
                               <Text textStyle='l' fontWeight='medium' letterSpacing='tight'>
                                 {item.price}
                               </Text>
-                              <IconButton size={'xs'} variant={'ghost'}>
+                              <IconButton
+                                size={'xs'}
+                                variant={'ghost'}
+                                onClick={() => void handleDeleteItem(item.id)}
+                              >
                                 <LuTrash2 />
                               </IconButton>
                             </Card.Footer>
