@@ -3,12 +3,28 @@ import { Flex } from '@chakra-ui/react/flex';
 import { Tabs } from '@chakra-ui/react/tabs';
 import { Heading } from '@chakra-ui/react/typography';
 import { LuScrollText, LuSettings, LuTrash2, LuX } from 'react-icons/lu';
-import items from './sample/items';
 import { Card } from '@chakra-ui/react/card';
 import { Image } from '@chakra-ui/react/image';
 import { Text } from '@chakra-ui/react/typography';
 import { HStack } from '@chakra-ui/react/stack';
+import { useEffect, useState } from 'react';
+import Item from './interfaces/Item';
+import { getItems } from './api/itemsApi';
+
 function App() {
+  const [items, setItems] = useState<Item[]>();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    void getItemList();
+  }, []);
+
+  async function getItemList() {
+    const newItems = await getItems();
+    setItems(newItems);
+    setLoading(false);
+  }
+
   return (
     <Tabs.Root defaultValue={'list'} variant={'enclosed'}>
       <Flex
@@ -54,41 +70,57 @@ function App() {
               overflow={'hidden'}
               gap={'2'}
             >
-              <Flex
-                id='list-container'
-                flex={1}
-                overflowY={'auto'}
-                direction={'column'}
-                gap={'2'}
-                p={'4'}
-                bgColor={'gray.100'}
-              >
-                {items.map((item) => {
-                  return (
-                    <Card.Root
-                      width={'100%'}
-                      variant={'elevated'}
-                      key={item.id}
-                      overflow={'hidden'}
-                      flexShrink={0}
-                    >
-                      <Image src={item.image_url} alt={item.name} maxH={'100px'} fit={'contain'} />
-                      <Card.Body gap={'0.5'}>
-                        <Card.Title lineClamp={'2'}>{item.name}</Card.Title>
-                        <Card.Description lineClamp={'2'}>{item.website}</Card.Description>
-                      </Card.Body>
-                      <Card.Footer gap={'2'} justifyContent={'space-between'}>
-                        <Text textStyle='l' fontWeight='medium' letterSpacing='tight'>
-                          {item.price}
-                        </Text>
-                        <IconButton size={'xs'} variant={'ghost'}>
-                          <LuTrash2 />
-                        </IconButton>
-                      </Card.Footer>
-                    </Card.Root>
-                  );
-                })}
-              </Flex>
+              {
+                <Flex
+                  id='list-container'
+                  flex={1}
+                  overflowY={'auto'}
+                  direction={'column'}
+                  gap={'2'}
+                  p={'4'}
+                  bgColor={'gray.100'}
+                >
+                  {!loading ? (
+                    items ? (
+                      items.map((item) => {
+                        return (
+                          <Card.Root
+                            width={'100%'}
+                            variant={'elevated'}
+                            key={item.id}
+                            overflow={'hidden'}
+                            flexShrink={0}
+                          >
+                            <Image
+                              src={item.image_url}
+                              alt={item.name}
+                              maxH={'100px'}
+                              minH={'100px'}
+                              fit={'contain'}
+                            />
+                            <Card.Body gap={'0.5'}>
+                              <Card.Title lineClamp={'2'}>{item.name}</Card.Title>
+                              <Card.Description lineClamp={'2'}>{item.website}</Card.Description>
+                            </Card.Body>
+                            <Card.Footer gap={'2'} justifyContent={'space-between'}>
+                              <Text textStyle='l' fontWeight='medium' letterSpacing='tight'>
+                                {item.price}
+                              </Text>
+                              <IconButton size={'xs'} variant={'ghost'}>
+                                <LuTrash2 />
+                              </IconButton>
+                            </Card.Footer>
+                          </Card.Root>
+                        );
+                      })
+                    ) : (
+                      <Text>No items</Text>
+                    )
+                  ) : (
+                    <Text>Loading...</Text>
+                  )}
+                </Flex>
+              }
               <Flex
                 id='list-tab-footer'
                 justify={'center'}

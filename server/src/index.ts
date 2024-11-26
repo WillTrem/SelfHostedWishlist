@@ -1,20 +1,14 @@
 import express, { ErrorRequestHandler, Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { createItem, deleteItem, getItem, getItems, updateItem } from './api';
-import ErrCallback from './types/ErrCallback';
 import Item from '@extension/Item';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT ?? 3000;
-
-// const genericErrCallback: ErrCallback = (err) => {
-//   if (err) {
-//     console.error(err);
-//   }
-// };
 
 const genericErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   if (err instanceof SyntaxError) {
@@ -29,6 +23,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(genericErrorHandler);
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    optionsSuccessStatus: 200,
+  }),
+);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('This is a test');
