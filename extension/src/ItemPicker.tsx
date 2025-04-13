@@ -1,15 +1,16 @@
 import { Button } from '@chakra-ui/react/button';
 import { Card } from '@chakra-ui/react/card';
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { injectPriceSelector, removePriceSelector } from './helpers/PriceSelectorHelpers';
 
 const ItemPicker: FunctionComponent = () => {
   const navigate = useNavigate();
+  const [price, setPrice] = useState<string>();
 
   useEffect(() => {
     // Apply content script functionality when component mounts
-    injectPriceSelector();
+    injectPriceSelector(handlePriceSelect);
 
     // Clean up when component unmounts
     return () => {
@@ -19,6 +20,10 @@ const ItemPicker: FunctionComponent = () => {
 
   function handleCancel() {
     navigate('/');
+  }
+
+  function handlePriceSelect(priceStr: string) {
+    console.log('SelectedPrice: ', priceStr);
   }
 
   return (
