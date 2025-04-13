@@ -18,3 +18,7 @@ export async function getItems(): Promise<Item[] | undefined> {
 export async function deleteItem(id: number): Promise<AxiosResponse> {
   return await axios.delete(`/items/${id}`);
 }
+
+export async function addItem(item: Partial<Item>) {
+  return await axios.post('/items', { ...item });
+}

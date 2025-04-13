@@ -2,15 +2,14 @@ import { Button, IconButton } from '@chakra-ui/react/button';
 import { Flex } from '@chakra-ui/react/flex';
 import { Tabs } from '@chakra-ui/react/tabs';
 import { Heading } from '@chakra-ui/react/typography';
-import { LuScrollText, LuSettings, LuTrash2, LuX } from 'react-icons/lu';
-import { Card } from '@chakra-ui/react/card';
-import { Image } from '@chakra-ui/react/image';
+import { LuScrollText, LuSettings, LuX } from 'react-icons/lu';
 import { Text } from '@chakra-ui/react/typography';
 import { HStack } from '@chakra-ui/react/stack';
 import { useEffect, useState } from 'react';
 import Item from './interfaces/Item';
 import { deleteItem, getItems } from './api/itemsApi';
 import { useNavigate } from 'react-router';
+import ItemCard from './components/ItemCard';
 
 function Home() {
   const [items, setItems] = useState<Item[]>();
@@ -105,41 +104,7 @@ function Home() {
                   {!loading ? (
                     items ? (
                       items.map((item) => {
-                        return (
-                          <Card.Root
-                            width={'100%'}
-                            variant={'elevated'}
-                            key={item.id}
-                            overflow={'hidden'}
-                            flexShrink={0}
-                            maxH={280}
-                            maxW={310}
-                          >
-                            <Image
-                              src={item.image_url}
-                              alt={item.name}
-                              maxH={'100px'}
-                              minH={'100px'}
-                              fit={'contain'}
-                            />
-                            <Card.Body gap={'0.5'}>
-                              <Card.Title lineClamp={'2'}>{item.name}</Card.Title>
-                              <Card.Description lineClamp={'2'}>{item.website}</Card.Description>
-                            </Card.Body>
-                            <Card.Footer gap={'2'} justifyContent={'space-between'}>
-                              <Text textStyle='l' fontWeight='medium' letterSpacing='tight'>
-                                {item.price}
-                              </Text>
-                              <IconButton
-                                size={'xs'}
-                                variant={'ghost'}
-                                onClick={() => void handleDeleteItem(item.id)}
-                              >
-                                <LuTrash2 />
-                              </IconButton>
-                            </Card.Footer>
-                          </Card.Root>
-                        );
+                        return <ItemCard item={item} onDelete={handleDeleteItem} />;
                       })
                     ) : (
                       <Text>No items</Text>

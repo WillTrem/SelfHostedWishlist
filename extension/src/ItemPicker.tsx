@@ -3,10 +3,15 @@ import { Card } from '@chakra-ui/react/card';
 import { FunctionComponent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { injectPriceSelector, removePriceSelector } from './helpers/PriceSelectorHelpers';
+import Item from './interfaces/Item';
+import { parseCurrentItem } from './helpers/ItemInfoParser';
+import ItemCard from './components/ItemCard';
+import { VStack } from '@chakra-ui/react';
+import { addItem } from './api/itemsApi';
 
 const ItemPicker: FunctionComponent = () => {
   const navigate = useNavigate();
-  const [price, setPrice] = useState<string>();
+  const [currentItem, setCurrentItem] = useState<Partial<Item>>();
 
   useEffect(() => {
     // Apply content script functionality when component mounts
@@ -24,18 +29,37 @@ const ItemPicker: FunctionComponent = () => {
 
   function handlePriceSelect(priceStr: string) {
     console.log('SelectedPrice: ', priceStr);
+    const newItem: Partial<Item> = { ...parseCurrentItem(), price: priceStr };
+    setCurrentItem(newItem);
+  }
+
+  async function handleConfirm() {
+    if (currentItem) {
+      await addItem(currentItem);
+      navigate('/');
+    }
   }
 
   return (
-    <Card.Root variant={'elevated'} w={360} h={160}>
+    <Card.Root variant={'elevated'} w={360} minH={160}>
       <Card.Body>
-        <Card.Title>Click on the product's price</Card.Title>
-        <Card.Description>Or enter price manually.</Card.Description>
+        {currentItem ? (
+          <VStack gap={'4'}>
+            <Card.Title>Is the product info correct?</Card.Title>
+            <ItemCard item={currentItem} />
+          </VStack>
+        ) : (
+          <>
+            <Card.Title>Click on the product's price</Card.Title>
+            <Card.Description>Or enter price manually.</Card.Description>
+          </>
+        )}
       </Card.Body>
       <Card.Footer justifyContent={'end'}>
         <Button variant={'ghost'} onClick={handleCancel}>
           Cancel
         </Button>
+        <Button onClick={() => void handleConfirm()}>Confirm</Button>
       </Card.Footer>
     </Card.Root>
   );
