@@ -2,9 +2,22 @@
   "manifest_version": 3,
   "version": "1.0.0",
   "name": "Self Hosted Wishlist Item Picker Extension",
-  "action": {
-    "default_popup": "index.html"
+  "action": {},
+  "permissions": ["scripting", "activeTab"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
   },
-  "permissions": ["scripting"],
-  "host_permissions": ["http://*/*", "https://*/*"]
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/*", "index.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

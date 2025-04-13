@@ -69,7 +69,15 @@ function Home() {
               </Tabs.Trigger>
               <Tabs.Indicator />
             </Tabs.List>
-            <IconButton variant={'ghost'}>
+            <IconButton
+              variant={'ghost'}
+              onClick={() => {
+                const container = document.getElementById('wishlist-extension-root');
+                if (container) {
+                  container.style.display = 'none';
+                }
+              }}
+            >
               <LuX />
             </IconButton>
           </HStack>

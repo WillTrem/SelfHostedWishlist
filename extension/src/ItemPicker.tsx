@@ -2,42 +2,18 @@ import { Button } from '@chakra-ui/react/button';
 import { Card } from '@chakra-ui/react/card';
 import { FunctionComponent, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { injectPriceSelector, removePriceSelector } from './helpers/PriceSelectorHelpers';
 
 const ItemPicker: FunctionComponent = () => {
   const navigate = useNavigate();
 
-  // Function to inject the content script
-  const injectScript = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab.id) {
-        chrome.scripting.executeScript({
-          target: { tabId: activeTab.id },
-          files: ['contentScript.js'],
-        });
-      }
-    });
-  };
-
-  // Function to remove the content script
-  const removeScript = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-      const activeTab = tabs[0];
-      if (activeTab.id) {
-        chrome.scripting.executeScript({
-          target: { tabId: activeTab.id },
-          files: ['cleanupScript.js'],
-        });
-      }
-    });
-  };
   useEffect(() => {
-    // Inject the content script when the component mounts
-    injectScript();
+    // Apply content script functionality when component mounts
+    injectPriceSelector();
 
-    // Remove the content script when the component unmounts
+    // Clean up when component unmounts
     return () => {
-      removeScript();
+      removePriceSelector();
     };
   }, []);
 
