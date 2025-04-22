@@ -1,9 +1,9 @@
-import Item from '@/interfaces/Item';
 import { Card, IconButton } from '@chakra-ui/react';
 import { FunctionComponent } from 'react';
 import { LuTrash2 } from 'react-icons/lu';
 import { Image } from '@chakra-ui/react/image';
 import { Text } from '@chakra-ui/react/typography';
+import { Item } from '@/types/DatabaseTypesShortcuts';
 
 interface ItemCardProps {
   item: Partial<Item>;

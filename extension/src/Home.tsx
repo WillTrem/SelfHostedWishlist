@@ -6,10 +6,10 @@ import { LuScrollText, LuSettings, LuX } from 'react-icons/lu';
 import { Text } from '@chakra-ui/react/typography';
 import { HStack } from '@chakra-ui/react/stack';
 import { useEffect, useState } from 'react';
-import Item from './interfaces/Item';
 import { deleteItem, getItems } from './api/itemsApi';
 import { useNavigate } from 'react-router';
 import ItemCard from './components/ItemCard';
+import { Item } from './types/DatabaseTypesShortcuts';
 
 function Home() {
   const [items, setItems] = useState<Item[]>();

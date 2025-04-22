@@ -1,4 +1,4 @@
-import Item from '@/interfaces/Item';
+import { Item } from '@/types/DatabaseTypesShortcuts';
 
 export function parseCurrentItem() {
   let currentItem: Partial<Item> = {};
