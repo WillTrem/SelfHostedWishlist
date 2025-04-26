@@ -1,0 +1,10 @@
+services:
+  flask-server:
+    container_name: flask-server
+    build: .
+    ports:
+      - '5000:5000'
+    environment:
+      - FLASK_APP=server.py
+    volumes:
+      - ./data:/usr/src/app/data
