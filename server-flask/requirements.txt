@@ -2,3 +2,5 @@
 flask
 flask-smorest
 flask-cors
+gunicorn
+gevent
