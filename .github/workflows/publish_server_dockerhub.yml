@@ -23,7 +23,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push adaptive-ui image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           push: true
           tags: |
@@ -31,7 +31,5 @@ jobs:
             willtrem/self-hosted-wishlist-server:latest
           context: ./server-flask
           file: ./server-flask/prod.Dockerfile
-          # cache-from: |
-          #   type=gha
-          #   type=registry,ref=willtrem/self-hosted-wishlist-server:latest
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
