@@ -33,5 +33,5 @@ jobs:
           file: ./prod.Dockerfile
           cache-from: |
             type=gha
-            type=registry,ref=${{ vars.DO_REGISTRY }}/${{ vars.BASE_TOOLING_IMAGE_NAME }}:latest
+            type=registry,ref=willtrem/self-hosted-wishlist-server:latest
           cache-to: type=gha,mode=max
