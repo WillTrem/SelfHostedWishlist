@@ -1,4 +1,17 @@
-import { Tables, TablesInsert } from './database.types';
+export type Item = {
+  id: number;
+  image_url: string;
+  name: string;
+  price: string;
+  url: string;
+  website: string;
+};
 
-export type Item = Tables<{ schema: 'self_hosted_wishlist' }, 'items'>;
-export type ItemInsert = TablesInsert<{ schema: 'self_hosted_wishlist' }, 'items'>;
+export type ItemInsert = {
+  id?: never;
+  image_url: string;
+  name: string;
+  price: string;
+  url: string;
+  website: string;
+};

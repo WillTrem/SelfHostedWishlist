@@ -1,3 +1,4 @@
 # Requirements for pip
 flask
 flask-smorest
+flask-cors

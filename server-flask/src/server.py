@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_smorest import Api
+from flask_cors import CORS
 from db import close_connection, get_db
 from items import items_bp
 
@@ -16,6 +17,8 @@ class APIConfig:
   OPENAPI_REDOC_URL='https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js'
   
 server.config.from_object(APIConfig)
+
+CORS(server)
 
 api = Api(server)
 
