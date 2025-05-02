@@ -7,7 +7,7 @@ import { parseCurrentItem } from './helpers/ItemInfoParser';
 import ItemCard from './components/ItemCard';
 import { VStack } from '@chakra-ui/react';
 import { itemsApi } from './api/itemsApi';
-import { Item, ItemInsert } from './types/DatabaseTypesShortcuts';
+import { Item, ItemInsert } from './types/DatabaseTypes';
 
 const ItemPicker: FunctionComponent = () => {
   const navigate = useNavigate();

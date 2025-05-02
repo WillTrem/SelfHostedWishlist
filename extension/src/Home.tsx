@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react';
 import { itemsApi } from './api/itemsApi';
 import { useNavigate } from 'react-router';
 import ItemCard from './components/ItemCard';
-import { Item } from './types/DatabaseTypesShortcuts';
+import { Item } from './types/DatabaseTypes';
 import Settings from './Settings';
 import { ERR_MSG } from './constants';
 

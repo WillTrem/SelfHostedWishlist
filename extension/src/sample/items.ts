@@ -1,4 +1,4 @@
-import { Item } from '@/types/DatabaseTypesShortcuts';
+import { Item } from '@/types/DatabaseTypes';
 
 const items: Item[] = [
   {

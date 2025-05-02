@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Item, ItemInsert } from '@/types/DatabaseTypesShortcuts';
+import { Item, ItemInsert } from '@/types/DatabaseTypes';
 import { ERR_MSG } from '@/constants';
 import { getApiUrl } from '@/helpers/ExtensionStorageHelper';
 
