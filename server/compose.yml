@@ -1,8 +1,0 @@
-services:
-  server:
-    build:
-      context: .
-    container_name: self-hosted-wishlist-server
-    ports:
-      - 3000:3000
-    restart: always
