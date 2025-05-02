@@ -6,7 +6,7 @@ import { injectPriceSelector, removePriceSelector } from './helpers/PriceSelecto
 import { parseCurrentItem } from './helpers/ItemInfoParser';
 import ItemCard from './components/ItemCard';
 import { VStack } from '@chakra-ui/react';
-import { addItem } from './api/itemsApi';
+import { itemsApi } from './api/itemsApi';
 import { Item, ItemInsert } from './types/DatabaseTypesShortcuts';
 
 const ItemPicker: FunctionComponent = () => {
@@ -35,7 +35,7 @@ const ItemPicker: FunctionComponent = () => {
 
   async function handleConfirm() {
     if (currentItem) {
-      await addItem(currentItem as ItemInsert);
+      await itemsApi.addItem(currentItem as ItemInsert);
       navigate('/');
     }
   }

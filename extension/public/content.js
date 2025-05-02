@@ -8,18 +8,6 @@ function createContainer() {
 
   container = document.createElement('div');
   container.id = 'wishlist-extension-root';
-  // container.style.cssText = `
-  //   position: fixed;
-  //   top: 10px;
-  //   right: 10px;
-  //   z-index: 10000;
-  //   max-width: 360px;
-  //   max-height: 600px;
-  //   box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  //   border-radius: 8px;
-  //   overflow: hidden;
-  //   background-color: white;
-  // `;
   container.style.cssText = `
     position: fixed;
     top: 10px;
@@ -28,21 +16,11 @@ function createContainer() {
   `;
   document.body.appendChild(container);
 
-  // // Include the assets without hardcoding the hash
+  // Main script for the actual extension functionality
   const script = document.createElement('script');
   script.type = 'module';
-  script.src = chrome.runtime.getURL('assets/index.js'); // Chrome will resolve to the actual hashed file
+  script.src = chrome.runtime.getURL('assets/index.js');
   container.appendChild(script);
-
-  // Use iframe to load the extension page which has all the correct references
-  // const iframe = document.createElement('iframe');
-  // iframe.src = chrome.runtime.getURL('index.html');
-  // iframe.style.cssText = `
-  //   width: 100%;
-  //   height: 100%;
-  //   border: none;
-  // `;
-  // container.appendChild(iframe);
 }
 
 // Listen for messages from the background script
@@ -58,5 +36,37 @@ chrome.runtime.onMessage.addListener((message) => {
         root.style.display = 'none';
       }
     }
+  }
+});
+
+// Add listener for storage requests
+window.addEventListener('message', (event) => {
+  if (event.source !== window || !event.data.storageAction) return;
+
+  const { storageAction, key, value, requestId } = event.data;
+
+  if (storageAction === 'get') {
+    chrome.storage.local.get([key], (result) => {
+      window.postMessage(
+        {
+          storageResponse: true,
+          requestId,
+          value: result[key],
+        },
+        '*',
+      );
+    });
+  } else if (storageAction === 'set') {
+    const data = {};
+    data[key] = value;
+    chrome.storage.local.set(data, () => {
+      window.postMessage(
+        {
+          storageResponse: true,
+          requestId,
+        },
+        '*',
+      );
+    });
   }
 });

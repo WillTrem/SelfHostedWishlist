@@ -6,14 +6,17 @@ import { LuScrollText, LuSettings, LuX } from 'react-icons/lu';
 import { Text } from '@chakra-ui/react/typography';
 import { HStack } from '@chakra-ui/react/stack';
 import { useEffect, useState } from 'react';
-import { deleteItem, getItems } from './api/itemsApi';
+import { itemsApi } from './api/itemsApi';
 import { useNavigate } from 'react-router';
 import ItemCard from './components/ItemCard';
 import { Item } from './types/DatabaseTypesShortcuts';
+import Settings from './Settings';
+import { ERR_MSG } from './constants';
 
 function Home() {
   const [items, setItems] = useState<Item[]>();
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string>();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,13 +27,21 @@ function Home() {
 
   async function getItemList() {
     setLoading(true);
-    const newItems = await getItems();
-    setItems(newItems);
-    setLoading(false);
+    setErrorMsg(undefined);
+    try {
+      const newItems = await itemsApi.getItems();
+      setItems(newItems);
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message === ERR_MSG.NO_BASE_URL) {
+        setErrorMsg(ERR_MSG.NO_BASE_URL);
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function handleDeleteItem(id: number) {
-    await deleteItem(id);
+    await itemsApi.deleteItem(id);
     setLoading(true);
   }
 
@@ -102,10 +113,12 @@ function Home() {
                   bgColor={'gray.100'}
                 >
                   {!loading ? (
-                    items ? (
+                    items && items.length > 0 ? (
                       items.map((item) => {
                         return <ItemCard item={item} onDelete={handleDeleteItem} />;
                       })
+                    ) : errorMsg ? (
+                      <Text color={'red'}>{errorMsg}</Text>
                     ) : (
                       <Text>No items</Text>
                     )
@@ -128,7 +141,9 @@ function Home() {
               </Flex>
             </Flex>
           </Tabs.Content>
-          <Tabs.Content value='settings'>SETTINGS</Tabs.Content>
+          <Tabs.Content value='settings' p={0}>
+            <Settings />
+          </Tabs.Content>
         </Flex>
       </Flex>
     </Tabs.Root>

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "name": "Self Hosted Wishlist Item Picker Extension",
   "action": {},
-  "permissions": ["scripting", "activeTab"],
+  "permissions": ["scripting", "activeTab", "storage"],
   "host_permissions": ["http://*/*", "https://*/*"],
   "content_scripts": [
     {
