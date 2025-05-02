@@ -111,6 +111,7 @@ function Home() {
                   gap={'2'}
                   p={'4'}
                   bgColor={'gray.100'}
+                  alignItems={'center'}
                 >
                   {!loading ? (
                     items && items.length > 0 ? (
