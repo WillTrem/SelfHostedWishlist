@@ -14,6 +14,7 @@ function createContainer() {
       top: 10px;
       right: 10px;
       z-index: 10000;
+      font-size: 16px;
     }
   `;
   document.head.appendChild(style);
