@@ -3,21 +3,19 @@ const PRICE_OUTLINE: string = '2px solid red';
 let priceClickHandler: ((event: MouseEvent) => void) | null = null;
 
 function isPotentialPriceElement(el: HTMLElement): boolean {
-  // console.log('isPotentialPriceElement');
-  const textTags = ['P', 'SPAN', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
   const textContent = el.textContent?.trim() ?? '';
   const pricePattern = /^(\$|€|£|¥|₹|[A-Z]{3})?\s?\d+([.,]\d{2})?\s?(\$|€|£|¥|₹|[A-Z]{3})?$/i;
 
-  // console.log(textContent);
-  // console.log('tags', textTags.includes(e.tagName));
-  // console.log('pattern', pricePattern.test(textContent));
-  if (textTags.includes(el.tagName) && pricePattern.test(textContent)) {
-    // console.log(true);
-    return true;
-  } else {
-    // console.log(false);
-    return false;
-  }
+  // Check if element contains a price-like pattern
+  if (!pricePattern.test(textContent)) return false;
+
+  // Make sure it's the innermost element with this exact price text
+  const hasTextNodeWithExactPrice = Array.from(el.childNodes)
+    .filter((node) => node.nodeType === Node.TEXT_NODE)
+    .some((node) => pricePattern.test(node.textContent?.trim() ?? ''));
+
+  // Either it has a direct text node with the price, or no children at all
+  return hasTextNodeWithExactPrice || el.children.length === 0;
 }
 
 function addPriceBorder(event: MouseEvent) {

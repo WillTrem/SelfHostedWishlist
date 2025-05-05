@@ -6,15 +6,22 @@ function createContainer() {
     return;
   }
 
+  // Inject style to set positioning
+  const style = document.createElement('style');
+  style.textContent = `
+    #wishlist-extension-root {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+    }
+  `;
+  document.head.appendChild(style);
+
   container = document.createElement('div');
   container.id = 'wishlist-extension-root';
-  container.style.cssText = `
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    z-index: 10000;
-  `;
-  document.body.appendChild(container);
+
+  document.documentElement.appendChild(container);
 
   // Main script for the actual extension functionality
   const script = document.createElement('script');
